@@ -1,0 +1,35 @@
+<html> 
+	<h3> View User Posts </h3>
+	<label>Select user: </label>
+			
+	<?php
+	$username = "layer";
+	$password = "layer";
+	$host = "mysql.eecs.ku.edu";
+	$dbname = "layer";
+
+	$conn = new mysqli("$host", "$username", "$password", "$dbname");
+
+	if($conn->connect_error) {
+		die("Failed to connect to the database: " . $conn->connect_error);
+	}
+				
+	//retrieve data from database
+	$result = $conn->query("SELECT user_id FROM users");
+				
+	//check query
+	if(!$result) {
+		die ("failed to run query.");
+	} 
+	
+	echo "<form method='post' action='ViewUserPosts.php'>";
+	echo "<select name='userid' onchange='this.form.submit()'>";
+	while($row = $result->fetch_assoc()) {
+		echo '<option value="' . $row['user_id'] . '">' . $row['user_id'] . '</option>';
+	}
+	$result->free();
+	echo "</select>";
+	echo "</form>";
+	$conn->close();
+	?>
+</html> 
